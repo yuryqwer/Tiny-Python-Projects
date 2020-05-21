@@ -2,110 +2,6 @@
 简易HTML模板引擎（https://www.jianshu.com/p/d6551dfacd58）
 
 将HTML模板编译为Python代码，运行代码并提供相应的上下文，会生成HTML文本
-
-模板引擎支持的语法不同，目前用来生成HTML的模板语法基于Django
-
-    1. 上下文中的数据使用双大括号插入：
-    <p>Welcome, {{user_name}}!</p>
-
-    2. 圆点将访问对象的属性或者字典的值，并且如果结果值是可调用的，它将被自动调用：
-    <p>The price is: {{product.price}}, with a {{product.discount}}% discount.</p>
-
-    3. 可以使用被称作过滤器的函数来修改值，过滤器通过一个竖线（管道符）来调用：
-    <p>Short name: {{story.subject|slugify|lower}}</p>
-
-    4. 支持条件语句：
-    {% if user.is_logged_in %}
-        <p>Welcome, {{ user.name }}!</p>
-    {% endif %}
-
-    5. 支持循环语句：
-    <p>Products:</p>
-    <ul>
-    {% for product in product_list %}
-        <li>{{ product.name }}: {{ product.price|format_price }}</li>
-    {% endfor %}
-    </ul>
-
-    6. 可以为模板添加注释，注释出现在大括号和井号之间：
-    {# This is the best template ever! #}
-
-
-将HTML模板编译成Python函数的示例如下：
-
-***************************************************
-1| <p>Welcome, {{user_name}}!</p>                 *
-2| <p>Products:</p>                               *
-3| <ul>                                           *
-4| {% for product in product_list %}              *
-5|     <li>{{ product.name }}:                    *
-6|         {{ product.price|format_price }}</li>  *
-7| {% endfor %}                                   *
-8| </ul>                                          *
-***********************************************************************
- 1| def render_function(context, do_dots):                            *
- 2|     c_user_name = context['user_name']                            *
- 3|     c_product_list = context['product_list']                      *
- 4|     c_format_price = context['format_price']                      *
- 5|                                                                   *
- 6|     result = []                                                   *
- 7|     append_result = result.append                                 *
- 8|     extend_result = result.extend                                 *
- 9|     to_str = str                                                  *
-10|                                                                   *
-11|     extend_result([                                               *
-12|         '<p>Welcome, ',                                           *
-13|         to_str(c_user_name),                                      *
-14|         '!</p>\n<p>Products:</p>\n<ul>\n'                         *
-15|     ])                                                            *
-16|     for c_product in c_product_list:                              *
-17|         extend_result([                                           *
-18|             '\n    <li>',                                         *
-19|             to_str(do_dots(c_product, 'name')),                   *
-20|             ':\n        ',                                        *
-21|             to_str(c_format_price(do_dots(c_product, 'price'))),  *
-22|             '</li>\n'                                             *
-23|         ])                                                        *
-24|     append_result('\n</ul>\n')                                    *
-25|     return ''.join(result)                                        *
-***********************************************************************
-
-每个模板都被转换为一个render_function函数，其接受一个叫做context的数据字典
-函数体先将上下文字典中的数据解析到本地变量，方便后续数据的重复使用
-所有的上下文数据用加上前缀c_的形式变为本地变量，防止命名冲突
-
-函数运行的结果是一个字符串
-从一些组成部分构建一个字符串的最快方式就是创建一个字符串列表，然后用join组合在一起
-result就是一个字符串列表
-因为需要添加字符串到这个列表中，所以将它的append和extend方法赋给本地变量
-最后一个本地变量是一个内置方法str的速记——to_str
-
-字符串方法赋给本地变量是一种微型优化，可以节省我们少量时间
-因为避免了再花时间去查找对象的append和extend方法
-而是保存在变量中直接调用
-
-str的快捷方式同样是一个微优化
-在python中变量可以是函数本地的或者模块全局的或者是python内置的
-查找一个本地变量名的速度要比查找一个全局或内置的名称快
-我们习惯于str是一个总是可获得的内置函数，但是python仍然不得不在每次使用它时查找变量名
-将它放在一个本地变量中又为我们节省了一小块的时间，因为本地的要比内建的快
-
-下面考虑从我们的特定模板中生成的python代码
-字符串将被使用append_result或者extend_result快捷键添加到result列表
-选择前一个还是后一个取决于我们只有一个字符串要添加还是多个
-
-同时具有append和extend方法增加了复杂性，但请记住我们的目的是模板的最快执行
-对一个项目使用extend意味着要创建该项目的新列表这样我们才能将它传递给extend
-因此只有一个字符串的时候可以尽量使用append
-
-在{{...}}中的表达式将被计算，转换为字符串，并被添加到result
-表达式中的点将被传入渲染函数的do_dots函数处理
-因为加点的表达式的意义取决于context中的数据形式：它可能是属性访问、子项目获取或者是一个调用
-
-{% if ... %}和{% for ... %}的逻辑结构都转换为python的条件语句和循环
-在{% if/for ... %}标签中的表达式将会变成if/for语句中的表达式
-然后直到{% end... %}标签之前的内容都会变成语句的主体
-
 """
 import re
 
@@ -176,7 +72,7 @@ class CodeBuilder:
         exec(python_source, global_namespace)
         return global_namespace
 
-class TempliteSyntaxError(Exception):
+class TempliteSyntaxError(ValueError):
     """
     自定义异常类
     """
