@@ -72,11 +72,13 @@ class CodeBuilder:
         exec(python_source, global_namespace)
         return global_namespace
 
+
 class TempliteSyntaxError(ValueError):
     """
     自定义异常类
     """
     pass
+
 
 class Templite:
     """
@@ -325,6 +327,7 @@ class Templite:
             if callable(value):
                 value = value()
         return value
+
 
 if __name__ == "__main__":
     templite = Templite('''<h1>Hello {{name|upper}}!</h1>
