@@ -1,0 +1,31 @@
+{
+  "name": "main",
+  "memo": "我的自动化应用",
+  "kind": "visual",
+  "blocks": [
+    {
+      "id": "504828bd-9ea7-4e9c-8ea8-b5568b27d278",
+      "name": "workflow.if",
+      "isEnabled": false,
+      "comment": "如果%operand1% %operator% %operand2%, 则执行以下操作",
+      "inputs": {
+        "operand1": {
+          "value": "10:"
+        },
+        "operator": {
+          "value": "10:==",
+          "display": "等于"
+        },
+        "operand2": {
+          "value": "10:"
+        }
+      },
+      "outputs": {},
+      "exception_handling": {
+          "mode": "retry",
+          "retryTime": "3",
+          "retryInterval": "2"
+      }
+    }
+  ]
+}
