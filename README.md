@@ -1,2 +1,4 @@
-# python-projects
-不定期收集一些python项目
+# 目录说明
+
+## lib
+平时编写的一些工具代码
