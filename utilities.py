@@ -10,7 +10,7 @@ def run_cmd(path, cond, timeout=None):
     """
     import threading
     import subprocess
-    proc = subprocess.Popen(path,
+    proc = subprocess.Popen(path, shell=True,
                             stdin=subprocess.PIPE,
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
