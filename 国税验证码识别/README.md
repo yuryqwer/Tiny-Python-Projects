@@ -4,16 +4,16 @@
 ### 验证码生成规律解析
 手动收集一些验证码，如图所示：
 
-![1](/captcha/2XTC5J_URRBBB.png)
-![2](/captcha/4PRTNY_BBBBRB.png)
-![3](/captcha/负爷TRZM_BURRUB.png)
-![4](/captcha/画坡F7PK_BBBUBR.png)
-![5](/captcha/束讼兔DJQ_RUURUU.png)
-![6](/captcha/田引WTWY_RBURBB.png)
-![7](/captcha/忠角忝R9F_URUBRR.png)
-![8](/captcha/兆RTTDU_RBRBBR.png)
-![9](/captcha/BRL9TT_BYBURU.png)
-![10](/captcha/WUT9EC_BBBBBB.png)
+![1](captcha/2XTC5J_URRBBB.png)
+![2](captcha/4PRTNY_BBBBRB.png)
+![3](captcha/负爷TRZM_BURRUB.png)
+![4](captcha/画坡F7PK_BBBUBR.png)
+![5](captcha/束讼兔DJQ_RUURUU.png)
+![6](captcha/田引WTWY_RBURBB.png)
+![7](captcha/忠角忝R9F_URUBRR.png)
+![8](captcha/兆RTTDU_RBRBBR.png)
+![9](captcha/BRL9TT_BYBURU.png)
+![10](captcha/WUT9EC_BBBBBB.png)
 
 通过观察图片可以发现以下规律：
 - 验证码由6个字符（数字/字母/汉字）组成，包括4种颜色（红/黄/蓝/黑）。
